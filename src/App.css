@@ -36,3 +36,57 @@
     transform: rotate(360deg);
   }
 }
+
+.header {
+  height: 100px;
+}
+
+.title {
+  margin-top: 0px;
+  padding-top: 20px;
+}
+
+.description {
+  margin-bottom: 0px;
+}
+
+.workspace {
+  height: calc(100vh - 100px);
+}
+
+.controls {
+  height: 62px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.controlButton {
+  height: 36.5px;
+}
+
+.canvas {
+  height: calc(100vh - 162px);
+}
+
+.node {
+  height: 60px;
+  min-width: 60px;
+  position: absolute;
+  cursor: move;
+  border: 5px solid black;
+  background: white;
+  border-radius: 50%;
+  padding: 1em;
+  margin: auto;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.nodeText {
+  color: black;
+  margin: 0px;
+}

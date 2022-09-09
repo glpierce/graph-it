@@ -3,19 +3,20 @@ import Controls from "./Controls.js"
 import Node from "./Node.js"
 import Edge from "./Edge.js"
 import { useState } from "react"
+import { calculateNewValue } from "@testing-library/user-event/dist/utils/index.js"
 
 function Workspace() {
     const [nodes, setNodes] = useState([]) 
     const [edges, setEdges] = useState([])
-    let nodeCount = 0
-    let edgeCount = 0
+    const [nodeCount, setNodeCount] = useState(0)
+    const [edgeCount, setEdgeCount] = useState(0)
     
     function createNode() {
-        const nodeData = {name: "Test", id: nodeCount, x: 500, y: 500}
+        const nodeData = {name: "", id: nodeCount, x: 150, y: 150}
         const temp = [...nodes]
         temp.push(nodeData)
         setNodes(temp)
-        nodeCount++
+        setNodeCount(nodeCount + 1)
     }
 
     function createEdge() {
@@ -27,12 +28,12 @@ function Workspace() {
     function resetGraph() {
         setNodes([])
         setEdges([])
-        nodeCount = 0
-        edgeCount = 0
+        setNodeCount(0)
+        setEdgeCount(0)
     }
 
     return(
-        <div>
+        <div className="workspace">
             <Controls createNode={createNode} createEdge={createEdge} resetGraph={resetGraph}/>
             <Canvas nodes={nodes} edges={edges}/>
         </div>
