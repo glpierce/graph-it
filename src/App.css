@@ -59,6 +59,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border-bottom: 2px solid lightgrey;
 }
 
 .controlButton {
@@ -66,19 +67,17 @@
 }
 
 .canvas {
-  height: calc(100vh - 162px);
+  height: calc(100vh - 320px);
 }
 
 .node {
-  height: 60px;
-  min-width: 60px;
+  height: 100px;
+  min-width: 100px;
   position: absolute;
-  cursor: move;
+  cursor: grab;
   border: 5px solid black;
   background: white;
   border-radius: 50%;
-  padding: 1em;
-  margin: auto;
   user-select: none;
   display: flex;
   justify-content: center;
@@ -89,4 +88,16 @@
 .nodeText {
   color: black;
   margin: 0px;
+}
+
+.edit {
+  height: 154px;
+  border-top: 2px solid lightgrey;
+}
+
+.editForm {
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
 }
