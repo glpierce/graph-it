@@ -5,7 +5,7 @@ import Xarrow, { Xwrapper } from "react-xarrows";
 function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, createEdge, completeEdge, newEdge }) {
     const cursor = useRef(null)
     const [cursorPos, setCursorPos] = useState([])
-    
+
     function checkUnselect(e) {
         if (e.target.id == "canvas") {
             setEditObj({})

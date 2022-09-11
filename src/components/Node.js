@@ -1,9 +1,14 @@
+import { useEffect, useState } from "react"
 import Draggable from "react-draggable"
 import { useXarrow } from "react-xarrows"
 
 function Node({ node, editObj, setEditObj, edgeToggle, createEdge, completeEdge, newEdge }) {
-    const canvas = document.querySelector("div.canvas").getBoundingClientRect()
+    const [canvas, setCanvas] = useState(document.querySelector("div.canvas").getBoundingClientRect())
     const updateXarrow = useXarrow()
+
+    useEffect(() => {
+        setCanvas(document.querySelector("div.canvas").getBoundingClientRect())
+    })
     
     function updateNode(e) {
         selectObj(e, {...node})
@@ -34,7 +39,7 @@ function Node({ node, editObj, setEditObj, edgeToggle, createEdge, completeEdge,
     }
     
     return(
-        <Draggable defaultPosition={{x: (canvas.width / 2) - 50, y: (canvas.height / 2) - 80}} onDrag={updateNode} onStop={updateXarrow}>
+        <Draggable bounds={{left: canvas.left, top: canvas.top - 164, right: canvas.right - 110, bottom: canvas.bottom - 274}} defaultPosition={{x: (canvas.width / 2) - 50, y: (canvas.height / 2) - 60}} onDrag={updateNode} onStop={updateXarrow}>
                 <div key={node.id} id={`${node.id}`} className="node" style={{border: selectColor()}} onClick={e => selectObj(e, {...node})}>
                     <p className="nodeText" style={{marginBottom: 2}}>Node {node.id}</p>
                     {node.name != "" ? <p className="nodeText">{node.name}</p> : null}

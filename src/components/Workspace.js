@@ -1,7 +1,7 @@
 import Canvas from "./Canvas.js"
 import Controls from "./Controls.js"
 import Edit from "./Edit.js"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 function Workspace() {
     const [nodes, setNodes] = useState([]) 
