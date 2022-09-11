@@ -11,6 +11,35 @@ function Workspace() {
     const [editObj, setEditObj] = useState({})
     const [edgeToggle, setEdgeToggle] = useState(false)
     const [newEdge, setNewEdge] = useState({})
+
+    function createEdgeList(id) {
+        const list = []
+        edges.filter(edge => edge.origin == id || (edge.destination == id && edge.biDir !== null).forEach(edge => {
+            if (edge.origin == id) {
+                list.add({destination: edge.destination, weight: edge.weight})
+            } else {
+                list.add({destination: edge.origin, weight: edge.biDir})
+            }
+        }))
+        return(list)
+    }
+
+    function populateData(startNode, parent, shortest, unvisited, adjacency) {
+        nodes.forEach(node => {
+            parent[node.id] = null
+            shortest[node.id] = (node.id === startNode ? 0 : Infinity)
+            unvisited.add(node.id)
+            adjacency[node.id] = createEdgeList(node.id)
+        })
+    }
+
+    function dijkstra(startNode) {
+        const parent = {}
+        const shortest = {}
+        const unvisited = new Set()
+        const adjacency = {}
+        populateData(startNode, parent, shortest, unvisited, adjacency)
+    }
     
     function createNode() {
         const nodeData = {type: "node", id: nodeCount, name: ""}
