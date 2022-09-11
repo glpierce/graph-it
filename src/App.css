@@ -90,6 +90,13 @@
   margin: 0px;
 }
 
+.edgeLabel {
+  font-size: 20pt;
+  font-weight: bold;
+  color: darkred;
+  margin: 0;
+}
+
 .edit {
   height: 154px;
   border-top: 2px solid lightgrey;

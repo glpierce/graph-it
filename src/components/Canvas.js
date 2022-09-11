@@ -34,12 +34,44 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
         }
     }
 
+    function labelEdge(edge) {
+        if (edge.destination !== null) {
+            return(
+                <>
+                    <p className="edgeLabel" onClick={(e) => selectEdge(e, {...edge})} style={{cursor: "grab"}}>{edge.weight}</p>
+                    {edge.biDir !== null ? <p className="edgeLabel" onClick={(e) => selectEdge(e, {...edge})} style={{cursor: "grab"}}>{edge.biDir}</p> : null}
+                </>
+            )
+        } else {
+            return("")
+        }
+    }
+
     return(
         <div id={"canvas"} className="canvas" onClick={e => checkUnselect(e)} onMouseMove={e => changeEdgeEnd(e)}>
             {edgeToggle ? <div ref={cursor} style={{height: 0, width: 0, position: "absolute", top: cursorPos[1], left: cursorPos[0]}}/> : null}
             <Xwrapper>
-                {nodes.map(node => <Node key={node.id} node={node} editObj={editObj} setEditObj={setEditObj} edgeToggle={edgeToggle} createEdge={createEdge} completeEdge={completeEdge} newEdge={newEdge}/>)}
-                {edges.map(edge => <Xarrow key={edge.id} start={`${edge.origin}`} end={edge.destination != null ? `${edge.destination}` : cursor} color={selectEdgeColor(edge)} passProps={{onClick: (e) => selectEdge(e, {...edge})}} style={{cursor: "grab"}}/>)}
+                {nodes.map(node => 
+                    <Node key={node.id}
+                          node={node} 
+                          editObj={editObj} 
+                          setEditObj={setEditObj} 
+                          edgeToggle={edgeToggle} 
+                          createEdge={createEdge} 
+                          completeEdge={completeEdge} 
+                          newEdge={newEdge}/>
+                )}
+                {edges.map(edge => 
+                    <Xarrow key={edge.id} 
+                            start={`${edge.origin}`} 
+                            end={edge.destination != null ? `${edge.destination}` : cursor}
+                            passProps={{onClick: (e) => selectEdge(e, {...edge})}}
+                            labels={labelEdge(edge)} 
+                            curveness={0.2}
+                            showTail={edge.biDir === null ? false : true}
+                            color={selectEdgeColor(edge)} 
+                            style={{cursor: "grab"}}/>
+                )}
             </Xwrapper>
         </div>
     )

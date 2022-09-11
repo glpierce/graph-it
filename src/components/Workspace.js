@@ -21,7 +21,7 @@ function Workspace() {
     }
 
     function createEdge(id) {
-        const edgeData = {type: "edge", id: edgeCount, weight: 0, origin: id, destination: null}
+        const edgeData = {type: "edge", id: edgeCount, weight: 0, origin: id, destination: null, biDir: null}
         setNewEdge(edgeData)
         const temp = [...edges]
         temp.push(edgeData)
