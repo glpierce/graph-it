@@ -135,3 +135,45 @@
   font-weight: bold;
   z-index: 5;
 }
+
+.shortestTitle {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.pathDataContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.pathDataLabel {
+  margin-left: 0px;
+  margin-right: 5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-weight: bold;
+}
+
+.pathValue {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.pathNode {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.pathStep {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

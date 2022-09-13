@@ -1,6 +1,6 @@
 import Canvas from "./Canvas.js"
 import Controls from "./Controls.js"
-import Edit from "./Edit.js"
+import Dialogue from "./Dialogue.js"
 import { useState } from "react"
 
 function Workspace() {
@@ -14,6 +14,7 @@ function Workspace() {
     const [dijToggle, setDijToggle] = useState(false)
     const [startID, setStartID] = useState(null)
     const [endID, setEndID] = useState(null)
+    const [shortest, setShortest] = useState({})
     const [dijResults, setDijResults] = useState({})
     const [path, setPath] = useState([])
 
@@ -29,10 +30,10 @@ function Workspace() {
         return(list)
     }
 
-    function populateData(start, parent, shortest, unvisited, adjacency) {
+    function populateData(start, parent, shortestDist, unvisited, adjacency) {
         nodes.forEach(node => {
             parent[node.id] = null
-            shortest[node.id] = (node.id === start ? 0 : Infinity)
+            shortestDist[node.id] = (node.id === start ? 0 : Infinity)
             unvisited.add(node.id)
             adjacency[node.id] = createEdgeList(node.id)
         })
@@ -57,20 +58,21 @@ function Workspace() {
 
     function dijkstra(start) {
         const parent = {}
-        const shortest = {}
+        const shortestDist = {}
         const unvisited = new Set()
         const adjacency = {}
-        populateData(start, parent, shortest, unvisited, adjacency)
+        populateData(start, parent, shortestDist, unvisited, adjacency)
         const nodeCount = unvisited.size
         for (let i = 0; i < nodeCount; i++) {
-            const closestID = getClosest(unvisited, shortest)
+            const closestID = getClosest(unvisited, shortestDist)
             adjacency[closestID].forEach(edge => {
-                if (shortest[edge.destination] > shortest[closestID] + edge.weight) {
-                    shortest[edge.destination] = shortest[closestID] + edge.weight
+                if (shortestDist[edge.destination] > shortestDist[closestID] + edge.weight) {
+                    shortestDist[edge.destination] = shortestDist[closestID] + edge.weight
                     parent[edge.destination] = closestID
                 }
             })
         }
+        setShortest({...shortestDist})
         setDijResults({...parent})
     }
 
@@ -115,6 +117,7 @@ function Workspace() {
         setDijToggle(false)
         setDijResults({})
         setPath([])
+        setShortest({})
     }
 
     function createNode() {
@@ -169,7 +172,7 @@ function Workspace() {
 
     function deleteElement(e, obj) {
         if (obj.type == "node") {
-            setEdges(edges.length ? edges.filter(edge => edge.origin != obj.id && edge.destination != obj.id) : {})
+            setEdges(edges.length ? edges.filter(edge => edge.origin != obj.id && edge.destination != obj.id) : [])
             setNodes(nodes.filter(node => node.id != obj.id))
             setEditObj({})
         } else {
@@ -222,10 +225,14 @@ function Workspace() {
                     selectStart={selectStart} 
                     selectEnd={selectEnd} 
                     path={path}/>
-            <Edit editObj={editObj} 
+            <Dialogue editObj={editObj} 
                   setEditObj={setEditObj} 
                   updateElement={updateElement} 
-                  deleteElement={deleteElement}/>
+                  deleteElement={deleteElement}
+                  startID={startID}
+                  endID={endID}
+                  path={path}
+                  shortest={shortest}/>
         </div>
     )
 }

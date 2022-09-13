@@ -28,7 +28,7 @@ function Controls({numNodes, edges, setEdges, newEdge, edgeToggle, dijToggle, cr
         <div className="controls">
             <Button variant="outlined" disabled={dijToggle} onClick={e => createNode()} className="controlButton" style={{marginLeft: 5, marginRight: 5}}>Create Node</Button>
             <Button variant="outlined" disabled={dijToggle || numNodes < 2} color={edgeToggle ? "error" : "primary"} onClick={e => handleEdge()} className="controlButton" style={{marginLeft: 5, marginRight: 5}}>{!edgeToggle ? "Create" : "Cancel"} Edge</Button>
-            <Button variant="outlined" disabled={!numNodes} color={dijToggle ? "error" : "success"} onClick={handleDij}className="controlButton" style={{marginLeft: 5, marginRight: 5}}>{dijToggle ? "Cancel" : "Run"} Dijkstra</Button>
+            <Button variant="outlined" disabled={edgeToggle || (numNodes < 2 || Object.keys(edges).length < 1)} color={dijToggle ? "error" : "success"} onClick={handleDij}className="controlButton" style={{marginLeft: 5, marginRight: 5}}>{dijToggle ? "Cancel" : "Run"} Dijkstra</Button>
             <Button variant="outlined" color="error" onClick={e => resetGraph()} className="controlButton" style={{marginLeft: 5, marginRight: 5}}>Reset Graph</Button>
         </div>
     )
