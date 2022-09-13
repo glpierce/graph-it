@@ -68,9 +68,6 @@
 
 .canvas {
   height: calc(100vh - 320px);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .node {
@@ -101,7 +98,7 @@
 }
 
 .modeContainer {
-  height: calc(100vh - 320px);
+  height: calc(100vh - 420px);
   display: flex;
   justify-content: left;
   align-items: flex-start;
@@ -110,6 +107,7 @@
 .modeLabel {
   margin-top: 2px;
   margin-left: 4px;
+  z-index: 5;
 }
 
 .edit {
@@ -122,4 +120,18 @@
   margin-top: 10px;
   justify-content: center;
   align-items: center;
+}
+
+.instructionsContainer {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.instructionsLabel {
+  font-size: 16pt;
+  font-weight: bold;
+  z-index: 5;
 }

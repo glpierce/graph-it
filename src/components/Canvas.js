@@ -7,7 +7,7 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
     const [cursorPos, setCursorPos] = useState([])
 
     function checkUnselect(e) {
-        if (e.target.id == "canvas") {
+        if (["canvas", "instructions", "mode"].includes(e.target.id)) {
             setEditObj({})
             if (edgeToggle) {
                 cancelEdge()
@@ -38,11 +38,11 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
 
     function setEdgeTop(edge) {
         if (Object.keys(editObj).length && (editObj.type == "edge" && edge.id == editObj.id)) {
-            return 1
+            return 4
         } else if (!!path.length && ((path.indexOf(edge.origin) !== -1 && path.indexOf(edge.origin) + 1 === path.indexOf(edge.destination)) || (startID === edge.origin && path[0] === edge.destination))) {
-            return 1
+            return 2
         } else {
-            return 0
+            return 1
         }
     }
 
@@ -66,6 +66,22 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
             return(<h3 className="modeLabel">Edit Mode</h3>)
         } else if (dijToggle) {
             return <h3 className="modeLabel">Dijkstra Mode</h3>
+        }
+    }
+
+    function selectInstructions() {
+        if (edgeToggle) {
+            if (!Object.keys(newEdge).length) {
+                return(<p className="instructionsLabel">Select a start node for the edge.</p>)
+            } else {
+                return(<p className="instructionsLabel">Select an end node for the edge.</p>)
+            }
+        } else if (dijToggle) {
+            if (startID === null) {
+                return(<p className="instructionsLabel">Select a start node.</p>)
+            } else {
+                return(<p className="instructionsLabel">Select an end node to see the shortest path.</p>)
+            }
         }
     }
 
@@ -102,8 +118,11 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
                             style={{cursor: "grab"}}/>
                 )}
             </Xwrapper>
-            <div className="modeContainer">
+            <div id={"mode"} className="modeContainer">
                 {selectMode()}
+            </div>
+            <div id={"instructions"} className="instructionsContainer">
+                {selectInstructions()}
             </div>
         </div>
     )

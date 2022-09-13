@@ -123,6 +123,7 @@ function Workspace() {
         temp.push(nodeData)
         setNodes(temp)
         setNodeCount(nodeCount + 1)
+        setEditObj(nodeData)
     }
 
     function createEdge(id) {
@@ -135,13 +136,15 @@ function Workspace() {
     }
 
     function completeEdge(id) {
-        const obj = {...newEdge, destination: id}
-        const tempEdges = [...edges]
-        tempEdges.splice(edges.findIndex(edge => edge.id == obj.id), 1, obj)
-        setEdges(tempEdges)
-        setEdgeToggle(false)
-        setNewEdge({})
-        setEditObj(obj)
+        if (id !== newEdge.origin) {
+            const obj = {...newEdge, destination: id}
+            const tempEdges = [...edges]
+            tempEdges.splice(edges.findIndex(edge => edge.id == obj.id), 1, obj)
+            setEdges(tempEdges)
+            setEdgeToggle(false)
+            setNewEdge({})
+            setEditObj(obj)
+        }
     }
 
     function cancelEdge() {
@@ -191,9 +194,38 @@ function Workspace() {
 
     return(
         <div className="workspace">
-            <Controls numNodes={nodes.length} dijToggle={dijToggle} createNode={createNode} setEdgeToggle={setEdgeToggle} resetGraph={resetGraph} setEditObj={setEditObj} startDij={startDij} cancelDij={cancelDij}/>
-            <Canvas nodes={nodes} edges={edges} editObj={editObj} setEditObj={setEditObj} edgeToggle={edgeToggle} cancelEdge={cancelEdge} createEdge={createEdge} completeEdge={completeEdge} newEdge={newEdge} dijToggle={dijToggle} startID={startID} endID={endID} selectStart={selectStart} selectEnd={selectEnd} path={path}/>
-            <Edit editObj={editObj} setEditObj={setEditObj} updateElement={updateElement} deleteElement={deleteElement}/>
+            <Controls numNodes={nodes.length} 
+                      edges={edges}
+                      setEdges={setEdges}
+                      newEdge={newEdge}
+                      edgeToggle={edgeToggle}
+                      dijToggle={dijToggle} 
+                      createNode={createNode}
+                      setEdgeToggle={setEdgeToggle}
+                      setNewEdge={setNewEdge}
+                      resetGraph={resetGraph}
+                      setEditObj={setEditObj} 
+                      startDij={startDij} 
+                      cancelDij={cancelDij}/>
+            <Canvas nodes={nodes} 
+                    edges={edges} 
+                    editObj={editObj} 
+                    setEditObj={setEditObj} 
+                    edgeToggle={edgeToggle} 
+                    cancelEdge={cancelEdge} 
+                    createEdge={createEdge} 
+                    completeEdge={completeEdge} 
+                    newEdge={newEdge} 
+                    dijToggle={dijToggle} 
+                    startID={startID} 
+                    endID={endID} 
+                    selectStart={selectStart} 
+                    selectEnd={selectEnd} 
+                    path={path}/>
+            <Edit editObj={editObj} 
+                  setEditObj={setEditObj} 
+                  updateElement={updateElement} 
+                  deleteElement={deleteElement}/>
         </div>
     )
 }

@@ -1,9 +1,19 @@
 import Button from '@mui/material/Button'
 
-function Controls({numNodes, dijToggle, createNode, setEdgeToggle, resetGraph, setEditObj, startDij, cancelDij }) {
-    function createEdge() {
-        setEdgeToggle(true)
+function Controls({numNodes, edges, setEdges, newEdge, edgeToggle, dijToggle, createNode, setEdgeToggle, setNewEdge, resetGraph, setEditObj, startDij, cancelDij }) {
+    
+    function handleEdge() {
         setEditObj({})
+        if (edgeToggle) {
+            if (!!Object.keys(newEdge).length) {
+                setEdges(edges.filter(edge => edge.id != newEdge.id))
+            }
+            setNewEdge({})
+            setEdgeToggle(false)
+        } else {
+            setEdgeToggle(true)
+        }
+        
     }
 
     function handleDij() {
@@ -17,7 +27,7 @@ function Controls({numNodes, dijToggle, createNode, setEdgeToggle, resetGraph, s
     return(
         <div className="controls">
             <Button variant="outlined" disabled={dijToggle} onClick={e => createNode()} className="controlButton" style={{marginLeft: 5, marginRight: 5}}>Create Node</Button>
-            <Button variant="outlined" disabled={dijToggle} onClick={e => createEdge()} className="controlButton" style={{marginLeft: 5, marginRight: 5}}>Create Edge</Button>
+            <Button variant="outlined" disabled={dijToggle || numNodes < 2} color={edgeToggle ? "error" : "primary"} onClick={e => handleEdge()} className="controlButton" style={{marginLeft: 5, marginRight: 5}}>{!edgeToggle ? "Create" : "Cancel"} Edge</Button>
             <Button variant="outlined" disabled={!numNodes} color={dijToggle ? "error" : "success"} onClick={handleDij}className="controlButton" style={{marginLeft: 5, marginRight: 5}}>{dijToggle ? "Cancel" : "Run"} Dijkstra</Button>
             <Button variant="outlined" color="error" onClick={e => resetGraph()} className="controlButton" style={{marginLeft: 5, marginRight: 5}}>Reset Graph</Button>
         </div>

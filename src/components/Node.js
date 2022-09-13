@@ -48,10 +48,20 @@ function Node({ node, editObj, setEditObj, edgeToggle, createEdge, completeEdge,
             return("5px solid black")
         }
     }
+
+    function setNodeZ() {
+        if (path.slice(0, path.length - 1).includes(node.id) || node.id === startID) {
+            return 3
+        } else if ((editObj.type == "node" && node.id == editObj.id) || node.id === endID) {
+            return 4
+        } else {
+            return 0
+        }
+    }
     
     return(
         <Draggable bounds={{left: canvas.left, top: canvas.top - 164, right: canvas.right - 110, bottom: canvas.bottom - 274}} defaultPosition={{x: (canvas.width / 2) - 50, y: (canvas.height / 2) - 60}} onDrag={updateNode} onStop={updateXarrow}>
-                <div key={node.id} id={`${node.id}`} className="node" style={{border: selectColor()}} onClick={e => selectObj(e, {...node})}>
+                <div key={node.id} id={`${node.id}`} className="node" style={{border: selectColor(), zIndex: setNodeZ()}} onClick={e => selectObj(e, {...node})}>
                     <p className="nodeText" style={{marginBottom: 2}}>Node {node.id}</p>
                     {node.name != "" ? <p className="nodeText">{node.name}</p> : null}
                 </div>
