@@ -68,6 +68,9 @@
 
 .canvas {
   height: calc(100vh - 320px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .node {
@@ -95,6 +98,18 @@
   font-weight: bold;
   color: darkred;
   margin: 0;
+}
+
+.modeContainer {
+  height: calc(100vh - 320px);
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+}
+
+.modeLabel {
+  margin-top: 2px;
+  margin-left: 4px;
 }
 
 .edit {

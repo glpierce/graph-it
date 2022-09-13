@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import Node from "./Node.js"
 import Xarrow, { Xwrapper } from "react-xarrows";
 
-function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, createEdge, completeEdge, newEdge }) {
+function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, createEdge, completeEdge, newEdge, dijToggle, startID, endID, selectStart, setEndID, dijResults }) {
     const cursor = useRef(null)
     const [cursorPos, setCursorPos] = useState([])
 
@@ -47,6 +47,16 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
         }
     }
 
+    function selectMode() {
+        if (edgeToggle) {
+            return(<h3 className="modeLabel">Edge Mode</h3>)
+        } else if (Object.keys(editObj).length) {
+            return(<h3 className="modeLabel">Edit Mode</h3>)
+        } else if (dijToggle) {
+            return <h3 className="modeLabel">Dijkstra Mode</h3>
+        }
+    }
+
     return(
         <div id={"canvas"} className="canvas" onClick={e => checkUnselect(e)} onMouseMove={e => changeEdgeEnd(e)}>
             {edgeToggle ? <div ref={cursor} style={{height: 0, width: 0, position: "absolute", top: cursorPos[1], left: cursorPos[0]}}/> : null}
@@ -59,7 +69,13 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
                           edgeToggle={edgeToggle} 
                           createEdge={createEdge} 
                           completeEdge={completeEdge} 
-                          newEdge={newEdge}/>
+                          newEdge={newEdge}
+                          dijToggle={dijToggle}
+                          startID={startID}
+                          endID={endID}
+                          selectStart={selectStart}
+                          setEndID={setEndID}
+                          dijResults={dijResults}/>
                 )}
                 {edges.map(edge => 
                     <Xarrow key={edge.id} 
@@ -73,6 +89,9 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
                             style={{cursor: "grab"}}/>
                 )}
             </Xwrapper>
+            <div className="modeContainer">
+                {selectMode()}
+            </div>
         </div>
     )
 }

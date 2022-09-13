@@ -11,36 +11,88 @@ function Workspace() {
     const [editObj, setEditObj] = useState({})
     const [edgeToggle, setEdgeToggle] = useState(false)
     const [newEdge, setNewEdge] = useState({})
+    const [dijToggle, setDijToggle] = useState(false)
+    const [startID, setStartID] = useState(null)
+    const [endID, setEndID] = useState(null)
+    const [dijResults, setDijResults] = useState({})
 
     function createEdgeList(id) {
         const list = []
-        edges.filter(edge => edge.origin == id || (edge.destination == id && edge.biDir !== null).forEach(edge => {
+        edges.filter(edge => edge.origin == id || (edge.destination == id && edge.biDir !== null)).forEach(edge => {
             if (edge.origin == id) {
-                list.add({destination: edge.destination, weight: edge.weight})
+                list.push({destination: edge.destination, weight: edge.weight})
             } else {
-                list.add({destination: edge.origin, weight: edge.biDir})
+                list.push({destination: edge.origin, weight: edge.biDir})
             }
-        }))
+        })
         return(list)
     }
 
-    function populateData(startNode, parent, shortest, unvisited, adjacency) {
+    function populateData(start, parent, shortest, unvisited, adjacency) {
         nodes.forEach(node => {
             parent[node.id] = null
-            shortest[node.id] = (node.id === startNode ? 0 : Infinity)
+            shortest[node.id] = (node.id === start ? 0 : Infinity)
             unvisited.add(node.id)
             adjacency[node.id] = createEdgeList(node.id)
         })
     }
 
-    function dijkstra(startNode) {
+    function getClosest(unvisited, shortest) {
+        let closestID = null
+        let minValue = Infinity
+        unvisited.forEach(nodeID => {
+            if (shortest[nodeID] <= minValue) {
+                minValue = shortest[nodeID]
+                closestID = nodeID
+            }
+        })
+        unvisited.forEach(nodeID => {
+            if (nodeID === closestID) {
+                unvisited.delete(nodeID)
+            }
+        })
+        return(closestID)
+    }
+
+    function dijkstra(start) {
         const parent = {}
         const shortest = {}
         const unvisited = new Set()
         const adjacency = {}
-        populateData(startNode, parent, shortest, unvisited, adjacency)
+        populateData(start, parent, shortest, unvisited, adjacency)
+        const nodeCount = unvisited.size
+        for (let i = 0; i < nodeCount; i++) {
+            const closestID = getClosest(unvisited, shortest)
+            adjacency[closestID].forEach(edge => {
+                if (shortest[edge.destination] > shortest[closestID] + edge.weight) {
+                    shortest[edge.destination] = shortest[closestID] + edge.weight
+                    parent[edge.destination] = closestID
+                }
+            })
+        }
+        console.log(parent)
+        setDijResults({...parent})
+    }
+    function startDij() {
+        if (edgeToggle) {
+            cancelEdge()
+        }
+        setEditObj({})
+        setDijToggle(true)
+    }
+
+    function selectStart(id) {
+        setStartID(id)
+        dijkstra(id)
     }
     
+    function cancelDij() {
+        setStartID(null)
+        setEndID(null)
+        setDijToggle(false)
+        setDijResults({})
+    }
+
     function createNode() {
         const nodeData = {type: "node", id: nodeCount, name: ""}
         const temp = [...nodes]
@@ -100,20 +152,23 @@ function Workspace() {
     }
 
     function resetGraph() {
+        if (edgeToggle) {
+            cancelEdge()
+        }
+        if (dijToggle) {
+            cancelDij()
+        }
         setNodes([])
         setEdges([])
         setNodeCount(0)
         setEdgeCount(0)
         setEditObj({})
-        if (edgeToggle) {
-            cancelEdge()
-        }
     }
 
     return(
         <div className="workspace">
-            <Controls createNode={createNode} setEdgeToggle={setEdgeToggle} resetGraph={resetGraph} setEditObj={setEditObj}/>
-            <Canvas nodes={nodes} edges={edges} editObj={editObj} setEditObj={setEditObj} edgeToggle={edgeToggle} cancelEdge={cancelEdge} createEdge={createEdge} completeEdge={completeEdge} newEdge={newEdge}/>
+            <Controls numNodes={nodes.length} dijToggle={dijToggle} createNode={createNode} setEdgeToggle={setEdgeToggle} resetGraph={resetGraph} setEditObj={setEditObj} startDij={startDij} cancelDij={cancelDij}/>
+            <Canvas nodes={nodes} edges={edges} editObj={editObj} setEditObj={setEditObj} edgeToggle={edgeToggle} cancelEdge={cancelEdge} createEdge={createEdge} completeEdge={completeEdge} newEdge={newEdge} dijToggle={dijToggle} startID={startID} endID={endID} selectStart={selectStart} setEndID={setEndID} dijResults={dijResults}/>
             <Edit editObj={editObj} setEditObj={setEditObj} updateElement={updateElement} deleteElement={deleteElement}/>
         </div>
     )
