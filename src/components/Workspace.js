@@ -15,6 +15,7 @@ function Workspace() {
     const [startID, setStartID] = useState(null)
     const [endID, setEndID] = useState(null)
     const [dijResults, setDijResults] = useState({})
+    const [path, setPath] = useState([])
 
     function createEdgeList(id) {
         const list = []
@@ -70,9 +71,24 @@ function Workspace() {
                 }
             })
         }
-        console.log(parent)
         setDijResults({...parent})
     }
+
+    function invalidPath() {
+
+    }
+
+    function generatePath(id, pathArray) {
+        if (dijResults[id] === null) {
+            if (startID !== id) {
+                invalidPath()
+            }
+        } else {
+            pathArray.unshift(id)
+            generatePath(dijResults[id], pathArray)
+        }
+    }
+
     function startDij() {
         if (edgeToggle) {
             cancelEdge()
@@ -85,12 +101,20 @@ function Workspace() {
         setStartID(id)
         dijkstra(id)
     }
+
+    function selectEnd(id) {
+        setEndID(id)
+        const pathArray = []
+        generatePath(id, pathArray)
+        setPath([...pathArray])
+    }
     
     function cancelDij() {
         setStartID(null)
         setEndID(null)
         setDijToggle(false)
         setDijResults({})
+        setPath([])
     }
 
     function createNode() {
@@ -168,7 +192,7 @@ function Workspace() {
     return(
         <div className="workspace">
             <Controls numNodes={nodes.length} dijToggle={dijToggle} createNode={createNode} setEdgeToggle={setEdgeToggle} resetGraph={resetGraph} setEditObj={setEditObj} startDij={startDij} cancelDij={cancelDij}/>
-            <Canvas nodes={nodes} edges={edges} editObj={editObj} setEditObj={setEditObj} edgeToggle={edgeToggle} cancelEdge={cancelEdge} createEdge={createEdge} completeEdge={completeEdge} newEdge={newEdge} dijToggle={dijToggle} startID={startID} endID={endID} selectStart={selectStart} setEndID={setEndID} dijResults={dijResults}/>
+            <Canvas nodes={nodes} edges={edges} editObj={editObj} setEditObj={setEditObj} edgeToggle={edgeToggle} cancelEdge={cancelEdge} createEdge={createEdge} completeEdge={completeEdge} newEdge={newEdge} dijToggle={dijToggle} startID={startID} endID={endID} selectStart={selectStart} selectEnd={selectEnd} path={path}/>
             <Edit editObj={editObj} setEditObj={setEditObj} updateElement={updateElement} deleteElement={deleteElement}/>
         </div>
     )

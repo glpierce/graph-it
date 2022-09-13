@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import Node from "./Node.js"
 import Xarrow, { Xwrapper } from "react-xarrows";
 
-function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, createEdge, completeEdge, newEdge, dijToggle, startID, endID, selectStart, setEndID, dijResults }) {
+function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, createEdge, completeEdge, newEdge, dijToggle, startID, endID, selectStart, selectEnd, path }) {
     const cursor = useRef(null)
     const [cursorPos, setCursorPos] = useState([])
 
@@ -29,8 +29,20 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
         if ((Object.keys(editObj).length && (editObj.type == "edge" && editObj.id == edge.id)) ||
             (Object.keys(newEdge).length && newEdge.id == edge.id)) {
             return("CornflowerBlue")
+        } else if (!!path.length && ((path.indexOf(edge.origin) !== -1 && path.indexOf(edge.origin) + 1 === path.indexOf(edge.destination)) || (startID === edge.origin && path[0] === edge.destination))) {
+            return("Blue")
         } else {
             return("black")
+        }
+    }
+
+    function setEdgeTop(edge) {
+        if (Object.keys(editObj).length && (editObj.type == "edge" && edge.id == editObj.id)) {
+            return 1
+        } else if (!!path.length && ((path.indexOf(edge.origin) !== -1 && path.indexOf(edge.origin) + 1 === path.indexOf(edge.destination)) || (startID === edge.origin && path[0] === edge.destination))) {
+            return 1
+        } else {
+            return 0
         }
     }
 
@@ -74,13 +86,14 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
                           startID={startID}
                           endID={endID}
                           selectStart={selectStart}
-                          setEndID={setEndID}
-                          dijResults={dijResults}/>
+                          selectEnd={selectEnd}
+                          path={path}/>
                 )}
                 {edges.map(edge => 
                     <Xarrow key={edge.id} 
                             start={`${edge.origin}`} 
                             end={edge.destination != null ? `${edge.destination}` : cursor}
+                            zIndex={setEdgeTop(edge)}
                             passProps={{onClick: (e) => selectEdge(e, {...edge})}}
                             labels={labelEdge(edge)} 
                             curveness={0.2}

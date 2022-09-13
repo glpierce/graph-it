@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import Draggable from "react-draggable"
 import { useXarrow } from "react-xarrows"
 
-function Node({ node, editObj, setEditObj, edgeToggle, createEdge, completeEdge, newEdge, dijToggle, startID, endID, selectStart, setEndID, dijResults }) {
+function Node({ node, editObj, setEditObj, edgeToggle, createEdge, completeEdge, newEdge, dijToggle, startID, endID, selectStart, selectEnd, path}) {
     const [canvas, setCanvas] = useState(document.querySelector("div.canvas").getBoundingClientRect())
     const updateXarrow = useXarrow()
 
@@ -25,10 +25,8 @@ function Node({ node, editObj, setEditObj, edgeToggle, createEdge, completeEdge,
         } else if (dijToggle) {
             if (startID == null) {
                 selectStart(obj.id)
-            } else if (Object.keys(dijResults).length) {
-                setEndID(obj.id)
             } else {
-
+                selectEnd(obj.id)
             }
         } else {
             setEditObj(obj)
@@ -37,11 +35,15 @@ function Node({ node, editObj, setEditObj, edgeToggle, createEdge, completeEdge,
 
     function selectColor() {
         if (((Object.keys(newEdge).length && newEdge.origin == node.id) || 
-            (Object.keys(editObj).length && ((editObj.type == "node" && editObj.id == node.id) || editObj.origin == node.id))) ||
+           (Object.keys(editObj).length && ((editObj.type == "node" && editObj.id == node.id) || editObj.origin == node.id))) ||
             node.id === startID) {
             return("5px solid green")
-        } else if (Object.keys(editObj).length && (editObj.type == "edge" && editObj.destination ==  node.id)) {
+        } else if ((Object.keys(editObj).length && 
+                  (editObj.type == "edge" && editObj.destination ==  node.id)) ||
+                  node.id === endID) {
             return("5px solid red")
+        } else if (!!path.length && path.includes(node.id)) {
+            return("5px solid blue")
         } else {
             return("5px solid black")
         }
