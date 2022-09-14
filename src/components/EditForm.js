@@ -14,6 +14,7 @@ function EditForm({ editObj, setEditObj, updateElement, deleteElement }) {
     },[editObj])
 
     function updateValue(e) {
+        console.log(e)
         if (editObj.type == "node") {
             setValue(e.target.value)
         } else {
@@ -30,6 +31,12 @@ function EditForm({ editObj, setEditObj, updateElement, deleteElement }) {
             setBiDir("")
         } else if (/^[0-9]*?\.?[0-9]*$/.test(e.target.value)) {
                 setBiDir(e.target.value)
+        }
+    }
+
+    function checkEnter(e, obj) {
+        if (e.key === 'Enter') {
+            saveChange(e, obj)
         }
     }
 
@@ -83,7 +90,8 @@ function EditForm({ editObj, setEditObj, updateElement, deleteElement }) {
                            variant="outlined" 
                            size="small" 
                            value={value} 
-                           onChange={e => updateValue(e)} 
+                           onChange={e => updateValue(e)}
+                           onKeyDown={e => checkEnter(e, {...editObj})}
                            style={{marginRight: 4}}
                 />
                 {biDir !== null ? 
@@ -91,7 +99,8 @@ function EditForm({ editObj, setEditObj, updateElement, deleteElement }) {
                                variant="outlined" 
                                size="small" 
                                value={biDir} 
-                               onChange={e => updateBiDir(e)} style={{marginRight: 4}}/> 
+                               onChange={e => updateBiDir(e)} style={{marginRight: 4}}
+                               onKeyDown={e => checkEnter(e, {...editObj})}/> 
                     : null
                 }
                 <Button variant="outlined" 
