@@ -132,6 +132,7 @@ function Workspace() {
     }
 
     function createNode() {
+        cancelEdge()
         const nodeData = {type: "node", id: nodeCount, name: ""}
         const temp = [...nodes]
         temp.push(nodeData)
