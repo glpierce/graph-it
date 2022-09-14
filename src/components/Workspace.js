@@ -3,7 +3,6 @@ import Canvas from "./Canvas.js"
 import Controls from "./Controls.js"
 import Dialogue from "./Dialogue.js"
 
-
 function Workspace() {
     const [nodes, setNodes] = useState([]) 
     const [edges, setEdges] = useState([])
