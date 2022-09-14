@@ -1,3 +1,4 @@
+import React from "react";
 import Button from '@mui/material/Button'
 
 function Controls({numNodes, edges, setEdges, newEdge, edgeToggle, dijToggle, createNode, setEdgeToggle, setNewEdge, resetGraph, setEditObj, startDij, cancelDij }) {

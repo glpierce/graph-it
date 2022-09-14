@@ -1,3 +1,4 @@
+import React from "react";
 import Canvas from "./Canvas.js"
 import Controls from "./Controls.js"
 import Dialogue from "./Dialogue.js"
