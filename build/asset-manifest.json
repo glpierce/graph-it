@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.202ab4fa.css",
-    "main.js": "/static/js/main.261a5c1c.js",
+    "main.css": "/static/css/main.476f1887.css",
+    "main.js": "/static/js/main.e0ab58f9.js",
     "static/js/787.1936850b.chunk.js": "/static/js/787.1936850b.chunk.js",
+    "static/media/GraphItLogo.png": "/static/media/GraphItLogo.36ee5fbb47b84198fa47.png",
     "index.html": "/index.html",
-    "main.202ab4fa.css.map": "/static/css/main.202ab4fa.css.map",
-    "main.261a5c1c.js.map": "/static/js/main.261a5c1c.js.map",
+    "main.476f1887.css.map": "/static/css/main.476f1887.css.map",
+    "main.e0ab58f9.js.map": "/static/js/main.e0ab58f9.js.map",
     "787.1936850b.chunk.js.map": "/static/js/787.1936850b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.202ab4fa.css",
-    "static/js/main.261a5c1c.js"
+    "static/css/main.476f1887.css",
+    "static/js/main.e0ab58f9.js"
   ]
 }

@@ -1,9 +1,10 @@
 import React from "react";
+import GraphItLogo from "../images/GraphItLogo.png"
 
 function Header() {
     return(
         <div className="header">
-            <h2 className="title">Graph It!</h2>
+            <img src={GraphItLogo} className="title" alt="Graph It"/>
             <p className="description">Create your own directed graph and use Dijkstra's algorithm to find the shortest path between nodes.</p>
         </div>
     )

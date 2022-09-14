@@ -43,10 +43,12 @@
 
 .title {
   margin-top: 0px;
-  padding-top: 20px;
+  padding-top: 12px;
+  height: 52px;
 }
 
 .description {
+  margin-top: 10px;
   margin-bottom: 0px;
 }
 
