@@ -14,7 +14,6 @@ function EditForm({ editObj, setEditObj, updateElement, deleteElement }) {
     },[editObj])
 
     function updateValue(e) {
-        console.log(e)
         if (editObj.type == "node") {
             setValue(e.target.value)
         } else {
