@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 function PathData({ startID, endID, path, shortest, pathInv, dijkstra, generatePath, setPath }) {
-    const units = ["weight", "edges"]
+    const [units, setUnits] = useState(["weight", "edges"])
     const [unitToggle, setUnitToggle] = useState(units[0])
 
     useEffect(() => {
