@@ -17,25 +17,36 @@ function Workspace() {
     const [shortest, setShortest] = useState({})
     const [dijResults, setDijResults] = useState({})
     const [path, setPath] = useState([])
+    const [pathInv, setPathInv] = useState(false)
 
-    function createEdgeList(id) {
+    function assignWeight(weight, unit) {
+        if (unit === "weight") {
+            return weight
+        } else if (unit === "edges") {
+            return 1
+        } else {
+            return 0
+        }
+    }
+
+    function createEdgeList(id, unit) {
         const list = []
         edges.filter(edge => edge.origin == id || (edge.destination == id && edge.biDir !== null)).forEach(edge => {
             if (edge.origin == id) {
-                list.push({destination: edge.destination, weight: edge.weight})
+                list.push({destination: edge.destination, weight: assignWeight(edge.weight, unit)})
             } else {
-                list.push({destination: edge.origin, weight: edge.biDir})
+                list.push({destination: edge.origin, weight: assignWeight(edge.biDir, unit)})
             }
         })
         return(list)
     }
 
-    function populateData(start, parent, shortestDist, unvisited, adjacency) {
+    function populateData(start, parent, shortestDist, unvisited, adjacency, unit) {
         nodes.forEach(node => {
             parent[node.id] = null
             shortestDist[node.id] = (node.id === start ? 0 : Infinity)
             unvisited.add(node.id)
-            adjacency[node.id] = createEdgeList(node.id)
+            adjacency[node.id] = createEdgeList(node.id, unit)
         })
     }
 
@@ -56,12 +67,12 @@ function Workspace() {
         return(closestID)
     }
 
-    function dijkstra(start) {
+    function dijkstra(start, unit) {
         const parent = {}
         const shortestDist = {}
         const unvisited = new Set()
         const adjacency = {}
-        populateData(start, parent, shortestDist, unvisited, adjacency)
+        populateData(start, parent, shortestDist, unvisited, adjacency, unit)
         const nodeCount = unvisited.size
         for (let i = 0; i < nodeCount; i++) {
             const closestID = getClosest(unvisited, shortestDist)
@@ -76,18 +87,17 @@ function Workspace() {
         setDijResults({...parent})
     }
 
-    function invalidPath() {
-
-    }
-
     function generatePath(id, pathArray) {
-        if (dijResults[id] === null) {
-            if (startID !== id) {
-                invalidPath()
-            }
-        } else {
+        if (dijResults[id] !== null) {
             pathArray.unshift(id)
             generatePath(dijResults[id], pathArray)
+            setPathInv(false)
+        } else {
+            if (startID !== id) {
+                setPathInv(true)
+            } else {
+                setPathInv(false)
+            }
         }
     }
 
@@ -101,7 +111,7 @@ function Workspace() {
 
     function selectStart(id) {
         setStartID(id)
-        dijkstra(id)
+        dijkstra(id, "weight")
     }
 
     function selectEnd(id) {
@@ -118,6 +128,7 @@ function Workspace() {
         setDijResults({})
         setPath([])
         setShortest({})
+        setPathInv(false)
     }
 
     function createNode() {
@@ -232,7 +243,11 @@ function Workspace() {
                   startID={startID}
                   endID={endID}
                   path={path}
-                  shortest={shortest}/>
+                  shortest={shortest}
+                  pathInv={pathInv}
+                  dijkstra={dijkstra}
+                  generatePath={generatePath}
+                  setPath={setPath}/>
         </div>
     )
 }

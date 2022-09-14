@@ -137,8 +137,18 @@
 }
 
 .shortestTitle {
-  margin-top: 10px;
+  margin-top: 0px;
   margin-bottom: 0px;
+}
+
+.pathTitleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .pathDataContainer {

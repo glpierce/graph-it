@@ -29,7 +29,7 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
         if ((Object.keys(editObj).length && (editObj.type == "edge" && editObj.id == edge.id)) ||
             (Object.keys(newEdge).length && newEdge.id == edge.id)) {
             return("CornflowerBlue")
-        } else if (!!path.length && ((path.indexOf(edge.origin) !== -1 && path.indexOf(edge.origin) + 1 === path.indexOf(edge.destination)) || (startID === edge.origin && path[0] === edge.destination))) {
+        } else if (!!path.length && (((path.indexOf(edge.origin) !== -1 && path.indexOf(edge.origin) + 1 === path.indexOf(edge.destination)) || (path.indexOf(edge.destination) !== -1 && path.indexOf(edge.destination) + 1 === path.indexOf(edge.origin))) || (startID === edge.origin && path[0] === edge.destination))) {
             return("Blue")
         } else {
             return("black")
