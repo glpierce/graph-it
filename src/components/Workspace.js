@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react"
 import Canvas from "./Canvas.js"
 import Controls from "./Controls.js"
 import Dialogue from "./Dialogue.js"
-import { useState } from "react"
+
 
 function Workspace() {
     const [nodes, setNodes] = useState([]) 
