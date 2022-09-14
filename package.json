@@ -2,8 +2,10 @@
   "name": "graph-it",
   "version": "0.1.0",
   "private": true,
+  "main": "server.js",
   "engines": {
-    "node": "16.x"
+    "node": "16.x",
+    "npm": "8.3.x"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -21,7 +23,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "heroku-postbuild": "npm install",
+    "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
