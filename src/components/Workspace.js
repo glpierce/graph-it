@@ -150,14 +150,28 @@ function Workspace() {
     }
 
     function completeEdge(id) {
-        if (id !== newEdge.origin) {
-            const obj = {...newEdge, destination: id}
-            const tempEdges = [...edges]
-            tempEdges.splice(edges.findIndex(edge => edge.id == obj.id), 1, obj)
-            setEdges(tempEdges)
-            setEdgeToggle(false)
-            setNewEdge({})
-            setEditObj(obj)
+        const duplicate = edges.find(edge => edge.destination === id && edge.origin === newEdge.origin)
+        const inverse = edges.find(edge => edge.origin === id && edge.destination === newEdge.origin)
+        if (duplicate === undefined) {
+            if (inverse !== undefined) {
+                if (inverse.biDir === null) {
+                    const tempEdges = edges.filter(edge => edge.id !== newEdge.id)
+                    inverse.biDir = 0
+                    tempEdges.splice(tempEdges.findIndex(edge => edge.id === inverse.id), 1, inverse)
+                    setEdges(tempEdges)
+                    setEditObj(inverse)
+                    setEdgeToggle(false)
+                    setNewEdge({})
+                }
+            } else if (id !== newEdge.origin) {
+                const tempEdges = [...edges]
+                const obj = {...newEdge, destination: id}
+                tempEdges.splice(tempEdges.findIndex(edge => edge.id == obj.id), 1, obj)
+                setEdges(tempEdges)
+                setEditObj(obj)
+                setEdgeToggle(false)
+                setNewEdge({})
+            } 
         }
     }
 

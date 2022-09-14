@@ -22,7 +22,9 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
     }
 
     function selectEdge(e, obj) {
-        setEditObj(obj)
+        if (!dijToggle) {
+            setEditObj(obj)
+        }
     }
 
     function selectEdgeColor(edge) {
@@ -87,7 +89,7 @@ function Canvas({ nodes, edges, editObj, setEditObj, edgeToggle, cancelEdge, cre
 
     return(
         <div id={"canvas"} className="canvas" onClick={e => checkUnselect(e)} onMouseMove={e => changeEdgeEnd(e)}>
-            {edgeToggle ? <div ref={cursor} style={{height: 0, width: 0, position: "absolute", top: cursorPos[1], left: cursorPos[0]}}/> : null}
+            {edgeToggle ? <div ref={cursor} style={{height: 0, width: 0, position: "absolute", top: cursorPos[1], left: cursorPos[0], cursor: "grab"}}/> : null}
             <Xwrapper>
                 {nodes.map(node => 
                     <Node key={node.id}
